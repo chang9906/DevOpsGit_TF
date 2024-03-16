@@ -48,7 +48,7 @@ jobs:
       needs: deploy-infra
       steps:
         - name: Checkout
-          uses: actions/Checout@v3
+          uses: actions/Checkout@v3
         - name: Set IP env var
           run: echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_IP }} >> $GITHUB_ENV
         - name: Login to AWS ECR
@@ -68,7 +68,7 @@ jobs:
             REPOSITORY: simple-node-app
             IMAGE_TAG: ${{ github.sha }}
             AWS_DEFAULT_REGION: us-east-1
-          uses: appleboy/ssh-action@mager
+          uses: appleboy/ssh-action@master
           with: 
             host: ${{ env.SERVER_PUBLIC_IP }}
             username: ubuntu
