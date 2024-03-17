@@ -50,10 +50,6 @@ jobs:
       steps:
         - name: Checkout
           uses: actions/Checkout@v3
-        - name: Capture and Set the Public IP as an Environment Variable
-          run: |
-            echo "SERVER_PUBLIC_IP=$(terraform output -raw instance_public_ip)" >> $GITHUB_ENV
-          working-directory: ./terraform
         - name: Use Public IP
           run: echo "The public IP is $instance_public_ip"
         - name: Login to AWS ECR
@@ -75,7 +71,7 @@ jobs:
             AWS_DEFAULT_REGION: us-east-1
           uses: appleboy/ssh-action@master
           with: 
-            host: ${{ env.SERVER_PUBLIC_IP }}
+            host: ${{ needs.deploy-infra.outputs.SERVER_PUBLIC_IP }}
             username: ubuntu
             key: ${{ env.PRIVATE_SSH_KEY }}
             envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_DEFAULT_REGION,AWS_REGION
