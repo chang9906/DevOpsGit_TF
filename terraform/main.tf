@@ -18,9 +18,9 @@ provider "aws" {
 resource "aws_instance" "server" {
     ami = "ami-080e1f13689e07408"
     instance_type = "t2.micro"
-    key_name = aws_key_pair.deployer.key_name
+    key_name = "deployer-key" #aws_key_pair.deployer.key_name
     vpc_security_group_ids = [aws_security_group.SG1.id]
-    iam_instance_profile = aws_iam_instance_profile.ec2-profile.name
+    iam_instance_profile = "EC2-Container"
     connection {
       type = "ssh"
       host = self.public_ip
@@ -32,11 +32,7 @@ resource "aws_instance" "server" {
       "name" = "DeployVM"
     }
 }
-resource "aws_iam_instance_profile" "ec2-profile" {
-    name = "ec2-profile"
-    role = "EC2-Container"
-  
-}
+
 resource "aws_security_group" "SG1" {
     egress = [
         {
